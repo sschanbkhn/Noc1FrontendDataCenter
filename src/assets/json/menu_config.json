@@ -159,26 +159,26 @@
       "icon": "bi bi-cpu",
       "subMenu": [
         {
-            "code": "hc-dashboard",
-            "name": "Healthcheck Automation",
-            "url": "/app/dashboard/origin",
-            "icon": "bi bi-cpu"
-          },
-          {
-            "code": "hc-dashboard-dns",
-            "name": "DNS Automation",
-            "url": "/app/dashboard/dns",
-            "icon": "bi bi-cpu"
-          },
-          {
-            "code": "hc-dashboard-sbc",
-            "name": "SBC Automation",
-            "url": "/app/dashboard/sbc",
-            "icon": "bi bi-cpu"
-          }
+          "code": "hc-dashboard",
+          "name": "Healthcheck Automation",
+          "url": "/app/dashboard/origin",
+          "icon": "bi bi-cpu"
+        },
+        {
+          "code": "hc-dashboard-dns",
+          "name": "DNS Automation",
+          "url": "/app/dashboard/dns",
+          "icon": "bi bi-cpu"
+        },
+        {
+          "code": "hc-dashboard-sbc",
+          "name": "SBC Automation",
+          "url": "/app/dashboard/sbc",
+          "icon": "bi bi-cpu"
+        }
       ]
     },
-    
+
     {
       "code": "NetworkInoc",
       "name": "AU IP",
@@ -235,6 +235,26 @@
         {
           "code": "anm_uc1",
           "name": "Demo Uc1",
+          "url": "/link-uc1",
+          "icon": "bi bi-grid"
+        }
+      ]
+    },
+    {
+      "code": "SOC1",
+      "name": "AU SOC1",
+      "url": "/user",
+      "icon": "bi bi-cpu",
+      "subMenu": [
+        {
+          "code": "soc1_uc1",
+          "name": "S001 VPN3G4G",
+          "url": "/link-uc1",
+          "icon": "bi bi-grid"
+        },
+        {
+          "code": "soc1_uc2",
+          "name": "S002 Siptrunk",
           "url": "/link-uc1",
           "icon": "bi bi-grid"
         }
