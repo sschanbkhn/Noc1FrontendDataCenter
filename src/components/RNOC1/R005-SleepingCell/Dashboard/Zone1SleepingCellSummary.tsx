@@ -181,13 +181,15 @@ const Zone1SleepingCellSummary: React.FC<Zone1SleepingCellSummaryProps> = ({ sel
   const getModalTitle = () => {
     switch (modalType) {
       case "sleeping":
-        return "Sleeping Cells Details";
+        return "😴 Sleeping Cells Details";
       case "process":
-        return "Process Cells Details";
+        return "⚡ Process Cells Details";
+
       case "execution":
-        return "Execution Cells Details";
+        return "🔧 Execution Cells Details";
+
       case "recheck":
-        return "Recheck Cells Details";
+        return "🔍 Recheck Cells Details";
       default:
         return "Cell Details";
     }
@@ -350,14 +352,33 @@ const Zone1SleepingCellSummary: React.FC<Zone1SleepingCellSummaryProps> = ({ sel
                             borderRadius: "12px",
                             fontSize: "12px",
                             fontWeight: 600,
-                            color: "white",
-                            background: "#2196F3",
+                            // color: "white",
+                            color: "#9a3412",
+                            // background: "#2196F3",
+                            background: "#fff3cd",
                           }}
                         >
                           {item.province || "N/A"}
                         </span>
                       </td>
-                      <td style={{ padding: "12px", borderBottom: "1px solid #f0f0f0", fontSize: "14px" }}>{item.district || "N/A"}</td>
+                      {/* <td style={{ padding: "12px", borderBottom: "1px solid #f0f0f0", fontSize: "14px" }}>{item.district || "N/A"}</td> */}
+
+                      <td style={{ padding: "12px", borderBottom: "1px solid #f0f0f0", fontSize: "14px" }}>
+                        <span
+                          style={{
+                            display: "inline-block",
+                            padding: "4px 10px",
+                            borderRadius: "12px",
+                            fontSize: "12px",
+                            fontWeight: 600,
+                            color: "#721c24",
+                            background: "#f8d7da",
+                          }}
+                        >
+                          {item.district || "N/A"}
+                        </span>
+                      </td>
+
                       <td style={{ padding: "12px", borderBottom: "1px solid #f0f0f0", fontSize: "14px" }}>
                         <span
                           style={{
@@ -411,7 +432,7 @@ const Zone1SleepingCellSummary: React.FC<Zone1SleepingCellSummaryProps> = ({ sel
             <div style={{ fontSize: "14px", color: "#666" }}>
               Hiển thị <strong>{sortedData.length > 0 ? startIndex : 0}</strong> - <strong>{endIndex}</strong> trong số <strong>{sortedData.length}</strong> bản ghi
             </div>
-            <div style={{ display: "flex", gap: "5px", marginRight: "50px" }}>{renderPaginationButtons()}</div>
+            <div style={{ display: "flex", gap: "5px", marginRight: "40px" }}>{renderPaginationButtons()}</div>
           </div>
         )}
       </div>
