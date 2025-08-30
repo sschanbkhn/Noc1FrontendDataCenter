@@ -27,7 +27,7 @@ const Zone1SleepingCellSummary: React.FC<Zone1SleepingCellSummaryProps> = ({ sel
   // Modern Table States
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [entriesPerPage, setEntriesPerPage] = useState(5);
+  const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [sortConfig, setSortConfig] = useState<{ column: string; direction: "asc" | "desc" } | null>(null);
 
   const isLoading = parentLoading || false;
@@ -159,11 +159,6 @@ const Zone1SleepingCellSummary: React.FC<Zone1SleepingCellSummaryProps> = ({ sel
         Tiếp ›
       </button>
     );
-    buttons.push(
-      <button className="btn btn-secondary ms-5" key="close" onClick={() => setShowModal(false)}>
-        Close
-      </button>
-    );
 
     return buttons;
   };
@@ -272,10 +267,10 @@ const Zone1SleepingCellSummary: React.FC<Zone1SleepingCellSummaryProps> = ({ sel
                   fontSize: "14px",
                 }}
               >
-                <option value={5}>5</option>
                 <option value={10}>10</option>
                 <option value={25}>25</option>
                 <option value={50}>50</option>
+                <option value={100}>100</option>
               </select>
               <span>bản ghi</span>
             </div>
@@ -411,7 +406,7 @@ const Zone1SleepingCellSummary: React.FC<Zone1SleepingCellSummaryProps> = ({ sel
             <div style={{ fontSize: "14px", color: "#666" }}>
               Hiển thị <strong>{sortedData.length > 0 ? startIndex : 0}</strong> - <strong>{endIndex}</strong> trong số <strong>{sortedData.length}</strong> bản ghi
             </div>
-            <div style={{ display: "flex", gap: "5px", marginRight: "50px" }}>{renderPaginationButtons()}</div>
+            <div style={{ display: "flex", gap: "5px" }}>{renderPaginationButtons()}</div>
           </div>
         )}
       </div>
