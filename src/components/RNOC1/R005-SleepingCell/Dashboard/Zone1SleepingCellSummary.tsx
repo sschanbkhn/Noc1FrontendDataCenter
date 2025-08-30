@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Card, Row, Col, Modal, Table, Badge } from "react-bootstrap";
 import API_CONFIG from "../Designer/ApiR005SleepingCellConfig";
 
+import * as ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
+
 interface Zone1SleepingCellSummaryProps {
   selectedDate?: string;
   loading?: boolean;
@@ -195,6 +198,90 @@ const Zone1SleepingCellSummary: React.FC<Zone1SleepingCellSummaryProps> = ({ sel
     }
   };
 
+  /*
+
+  const exportToExcel = () => {
+    const exportData = getSortedData().map((item, index) => ({
+      STT: index + 1,
+      "Cell Name": item.lncel_name || "N/A",
+      "Site Name": item.lnbts_name || "N/A",
+      Province: item.province || "N/A",
+      District: item.district || "N/A",
+      Status: item.execution_status || "Active",
+      "IP Address": item.ssh_host || "N/A",
+    }));
+
+    // Tạo CSV content
+    const csvContent = [Object.keys(exportData[0]).join(","), ...exportData.map((row) => Object.values(row).join(","))].join("\n");
+
+    // Download file
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${modalType}_cells_${selectedDate}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
+  */
+
+  const exportToExcel = async () => {
+    const exportData = getSortedData().map((item, index) => ({
+      STT: index + 1,
+      "Cell Name": item.lncel_name || "N/A",
+      "Site Name": item.lnbts_name || "N/A",
+      Province: item.province || "N/A",
+      District: item.district || "N/A",
+      Status: item.execution_status || "N/A",
+      "IP Address": item.ssh_host || "N/A",
+    }));
+
+    // Tạo workbook
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet(modalType.toUpperCase());
+
+    // Thêm data
+    worksheet.addRows([
+      Object.keys(exportData[0]), // Headers
+      ...exportData.map((row) => Object.values(row)),
+    ]);
+
+    // Style header row (row 1)
+    const headerRow = worksheet.getRow(1);
+    headerRow.eachCell((cell) => {
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FF2196F3" }, // Màu xanh như header
+      };
+      cell.font = {
+        color: { argb: "FFFFFFFF" }, // Text trắng
+        bold: true,
+      };
+      cell.alignment = {
+        horizontal: "center",
+        vertical: "middle",
+      };
+    });
+
+    // Set column widths
+    worksheet.columns = [
+      { width: 10 }, // #
+      { width: 25 }, // Cell Name
+      { width: 25 }, // Site Name
+      { width: 12 }, // Province
+      { width: 12 }, // District
+      { width: 12 }, // Status
+      { width: 18 }, // IP Address
+    ];
+
+    // Export file
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    saveAs(blob, `${modalType}_cells_${selectedDate}.xlsx`);
+  };
+
   // Modern table component
   const renderModernTable = () => {
     const paginatedData = getPaginatedData();
@@ -285,6 +372,9 @@ const Zone1SleepingCellSummary: React.FC<Zone1SleepingCellSummaryProps> = ({ sel
             <div style={{ fontSize: "14px", color: "#666" }}>
               Tổng: <strong>{modalData.length}</strong> bản ghi
             </div>
+            <button className="btn btn-success btn-sm" onClick={() => exportToExcel()} style={{ marginLeft: "15px" }}>
+              📊 Export Excel
+            </button>
           </div>
         </div>
 
@@ -294,13 +384,14 @@ const Zone1SleepingCellSummary: React.FC<Zone1SleepingCellSummaryProps> = ({ sel
             <thead>
               <tr>
                 {[
-                  { key: "#", field: "index" },
+                  { key: "STT", field: "index" },
                   { key: "Cell Name", field: "lncel_name" },
                   { key: "Site Name", field: "lnbts_name" },
                   { key: "Province", field: "province" },
                   { key: "District", field: "district" },
-                  { key: "Status", field: "period_start_time" },
-                  { key: "Last Update", field: "created_at" },
+                  { key: "Status", field: "execution_status" },
+                  // { key: "Last Update", field: "created_at" },
+                  { key: "IP Address", field: "ssh_host" },
                 ].map((header) => (
                   <th
                     key={header.key}
@@ -391,10 +482,11 @@ const Zone1SleepingCellSummary: React.FC<Zone1SleepingCellSummaryProps> = ({ sel
                             color: "#2e7d32",
                           }}
                         >
-                          {item.period_start_time || "Active"}
+                          {item.execution_status || "Active"}
                         </span>
                       </td>
-                      <td style={{ padding: "12px", borderBottom: "1px solid #f0f0f0", fontSize: "14px", color: "#666" }}>{item.created_at || "N/A"}</td>
+                      {/* <td style={{ padding: "12px", borderBottom: "1px solid #f0f0f0", fontSize: "14px", color: "#666" }}>{item.created_at || "N/A"}</td> */}
+                      <td style={{ padding: "12px", borderBottom: "1px solid #f0f0f0", fontSize: "14px", color: "#666" }}>{item.ssh_host || "N/A"}</td>
                     </tr>
                   );
                 })
