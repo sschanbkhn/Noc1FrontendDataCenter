@@ -1305,6 +1305,9 @@ const KpiMonitorTab: React.FC = () => {
                 )}
               </div>
 
+
+              
+
               */}
 
               <div className="modal-body" style={{ padding: "0" }}>
@@ -1330,9 +1333,9 @@ const KpiMonitorTab: React.FC = () => {
                             </th>
                           ))}
                           {/* 3 cột bổ sung */}
-                          <th style={{ padding: "10px 8px", fontSize: "14px", fontWeight: "600", minWidth: "150px", border: "1px solid #2e5082", textAlign: "center" }}>Reset Permission</th>
-                          <th style={{ padding: "10px 8px", fontSize: "14px", fontWeight: "600", minWidth: "120px", border: "1px solid #2e5082", textAlign: "center" }}>Blacklist</th>
-                          <th style={{ padding: "10px 8px", fontSize: "14px", fontWeight: "600", minWidth: "120px", border: "1px solid #2e5082", textAlign: "center" }}>Action</th>
+                          <th style={{ padding: "15px 12px", fontSize: "14px", fontWeight: "600", minWidth: "120px", border: "1px solid #2e5082", textAlign: "center" }}>Reset Permission</th>
+                          <th style={{ padding: "15px 12px", fontSize: "14px", fontWeight: "600", minWidth: "120px", border: "1px solid #2e5082", textAlign: "center" }}>Blacklist</th>
+                          <th style={{ padding: "15px 12px", fontSize: "14px", fontWeight: "600", minWidth: "120px", border: "1px solid #2e5082", textAlign: "center" }}>Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -1377,7 +1380,7 @@ const KpiMonitorTab: React.FC = () => {
                                 key={index}
                                 style={{
                                   padding: "12px 8px",
-                                  fontSize: "14px",
+                                  fontSize: "12px",
                                   border: "1px solid #e9ecef",
                                   maxWidth,
                                   overflow: "hidden",
@@ -1395,7 +1398,7 @@ const KpiMonitorTab: React.FC = () => {
                                     borderRadius: "4px",
                                     backgroundColor: badgeColor,
                                     color: textColor,
-                                    fontSize: "14px",
+                                    fontSize: "11px",
                                     fontWeight: "500",
                                     maxWidth: "100%",
                                     overflow: "hidden",
@@ -1409,14 +1412,14 @@ const KpiMonitorTab: React.FC = () => {
                           })}
 
                           {/* 3 cột bổ sung */}
-                          <td style={{ padding: "12px 8px", fontSize: "14px", border: "1px solid #e9ecef", textAlign: "center" }}>
+                          <td style={{ padding: "12px 8px", fontSize: "12px", border: "1px solid #e9ecef", textAlign: "center" }}>
                             <span
                               style={{
                                 padding: "4px 8px",
                                 borderRadius: "4px",
                                 backgroundColor: selectedRecord.reset_permission ? "#d4edda" : "#f8d7da",
                                 color: selectedRecord.reset_permission ? "#155724" : "#721c24",
-                                fontSize: "14px",
+                                fontSize: "11px",
                                 fontWeight: "500",
                               }}
                             >
@@ -1424,14 +1427,14 @@ const KpiMonitorTab: React.FC = () => {
                             </span>
                           </td>
 
-                          <td style={{ padding: "12px 8px", fontSize: "14px", border: "1px solid #e9ecef", textAlign: "center" }}>
+                          <td style={{ padding: "12px 8px", fontSize: "12px", border: "1px solid #e9ecef", textAlign: "center" }}>
                             <span
                               style={{
                                 padding: "4px 8px",
                                 borderRadius: "4px",
                                 backgroundColor: selectedRecord.action_blacklist ? "#f8d7da" : "#d4edda",
                                 color: selectedRecord.action_blacklist ? "#721c24" : "#155724",
-                                fontSize: "14px",
+                                fontSize: "11px",
                                 fontWeight: "500",
                               }}
                             >
@@ -1439,7 +1442,7 @@ const KpiMonitorTab: React.FC = () => {
                             </span>
                           </td>
 
-                          <td style={{ padding: "12px 8px", fontSize: "14px", border: "1px solid #e9ecef", textAlign: "center" }}>
+                          <td style={{ padding: "12px 8px", fontSize: "12px", border: "1px solid #e9ecef", textAlign: "center" }}>
                             <button
                               className="btn btn-sm"
                               style={{
@@ -1448,7 +1451,7 @@ const KpiMonitorTab: React.FC = () => {
                                 border: "none",
                                 borderRadius: "4px",
                                 padding: "4px 8px",
-                                fontSize: "14px",
+                                fontSize: "11px",
                                 fontWeight: "600",
                               }}
                               onClick={() => {
