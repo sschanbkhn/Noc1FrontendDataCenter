@@ -1,27 +1,10 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faEnvelope, faFolderOpen, faNetworkWired, faShieldAlt, faClock, faDatabase } from "@fortawesome/free-solid-svg-icons";
-import { faEnvelope, faFolderOpen, faNetworkWired, faShieldAlt, faClock, faDatabase, faPlus, faTimes, faSearch } from "@fortawesome/free-solid-svg-icons";
-
-// Mapping card với table
-const configTableMapping: { [key: number]: { table: string; api: string; title: string } } = {
-  1: { table: "outlook", api: "/api/outlook", title: "Email Configuration" },
-  2: { table: "tablefilepath", api: "/api/filepath", title: "File Path Management" },
-  3: { table: "objtablemrbts_infor", api: "/api/mrbts", title: "MRBTS Information" },
-  4: { table: "objtableresetsitecountlimits", api: "/api/resetlimits", title: "Reset Site Limits" },
-  5: { table: "objtablescheduler", api: "/api/scheduler", title: "Scheduler Configuration" },
-  6: { table: "objtableaccountssh", api: "/api/ssh", title: "Account SSH Settings" },
-};
+import { faEnvelope, faFolderOpen, faNetworkWired, faShieldAlt, faClock, faDatabase } from "@fortawesome/free-solid-svg-icons";
 
 const Configuration = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  // Thêm vào đầu component
-  const [showModal, setShowModal] = useState(false);
-  // const [selectedConfig, setSelectedConfig] = useState(null);
-  const [selectedConfig, setSelectedConfig] = useState<ConfigModule | null>(null);
 
-  const [modalData, setModalData] = useState([]);
-  const [modalLoading, setModalLoading] = useState(false);
   type ModuleStatus = "active" | "maintenance";
 
   interface ConfigModule {
@@ -130,14 +113,11 @@ const Configuration = () => {
       </div>
 
       {/* Results Count */}
-      {/*
       <div style={{ marginBottom: "20px" }}>
         <p style={{ color: "#64748b", fontSize: "14px", margin: "0" }}>
           Showing {filteredModules.length} of {configModules.length} configuration modules
         </p>
       </div>
-
-      */}
 
       {/* Cards Grid */}
       <div
@@ -170,36 +150,15 @@ const Configuration = () => {
               alignItems: "center",
               boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
             }}
-            onClick={async () => {
-              setSelectedConfig(module);
-              setShowModal(true);
-              setModalLoading(true);
-
-              try {
-                const config = configTableMapping[module.id];
-
-                const response = await fetch(config.api);
-                const data = await response.json();
-                setModalData(data);
-              } catch (error) {
-                console.error("Error:", error);
-              } finally {
-                setModalLoading(false);
-              }
-            }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-8px)";
               e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.1)";
               e.currentTarget.style.borderColor = module.iconColor;
-              e.currentTarget.style.background = `linear-gradient(135deg, ${module.iconColor}15, ${module.iconColor}10)`;
-              // chinh do dam nhat
-              // e.currentTarget.style.background = `linear-gradient(135deg, ${module.iconColor}15, ${module.iconColor}10)`;
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
               e.currentTarget.style.boxShadow = "0 4px 6px -1px rgba(0, 0, 0, 0.1)";
               e.currentTarget.style.borderColor = "#f1f5f9";
-              e.currentTarget.style.background = "white";
             }}
           >
             {/* Status Dot */}

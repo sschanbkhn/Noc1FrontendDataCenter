@@ -1,93 +1,167 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faEnvelope, faFolderOpen, faNetworkWired, faShieldAlt, faClock, faDatabase } from "@fortawesome/free-solid-svg-icons";
-import { faEnvelope, faFolderOpen, faNetworkWired, faShieldAlt, faClock, faDatabase, faPlus, faTimes, faSearch } from "@fortawesome/free-solid-svg-icons";
-
-// Mapping card với table
-const configTableMapping: { [key: number]: { table: string; api: string; title: string } } = {
-  1: { table: "outlook", api: "/api/outlook", title: "Email Configuration" },
-  2: { table: "tablefilepath", api: "/api/filepath", title: "File Path Management" },
-  3: { table: "objtablemrbts_infor", api: "/api/mrbts", title: "MRBTS Information" },
-  4: { table: "objtableresetsitecountlimits", api: "/api/resetlimits", title: "Reset Site Limits" },
-  5: { table: "objtablescheduler", api: "/api/scheduler", title: "Scheduler Configuration" },
-  6: { table: "objtableaccountssh", api: "/api/ssh", title: "Account SSH Settings" },
-};
 
 const Configuration = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  // Thêm vào đầu component
-  const [showModal, setShowModal] = useState(false);
-  // const [selectedConfig, setSelectedConfig] = useState(null);
-  const [selectedConfig, setSelectedConfig] = useState<ConfigModule | null>(null);
 
-  const [modalData, setModalData] = useState([]);
-  const [modalLoading, setModalLoading] = useState(false);
+  // Thêm type definitions
   type ModuleStatus = "active" | "maintenance";
 
   interface ConfigModule {
     id: number;
     title: string;
     description: string;
-    icon: any;
-    iconColor: string;
+    icon: string;
     status: ModuleStatus;
   }
+
+  /*
 
   const configModules: ConfigModule[] = [
     {
       id: 1,
       title: "Email Configuration",
       description: "SMTP & Notification Settings",
-      icon: faEnvelope,
-      iconColor: "#3b82f6",
+      icon: "✉️",
       status: "active",
     },
     {
       id: 2,
       title: "File Path Management",
       description: "Storage & Directory Config",
-      icon: faFolderOpen,
-      iconColor: "#10b981",
+      icon: "🗂️",
       status: "active",
     },
     {
       id: 3,
       title: "MRBTS Information",
       description: "Network & Topology Settings",
-      icon: faNetworkWired,
-      iconColor: "#f59e0b",
+      icon: "📶",
       status: "active",
     },
     {
       id: 4,
       title: "Reset Site Limit",
       description: "Safety Threshold Controls",
-      icon: faShieldAlt,
-      iconColor: "#ef4444",
+      icon: "⚖️",
       status: "active",
     },
     {
       id: 5,
       title: "Scheduler Configuration",
       description: "Automated Task Management",
-      icon: faClock,
-      iconColor: "#8b5cf6",
+      icon: "🕐",
       status: "active",
     },
     {
       id: 6,
       title: "Database Settings",
       description: "Connection & Backup Config",
-      icon: faDatabase,
-      iconColor: "#06b6d4",
+      icon: "💾",
       status: "maintenance",
     },
   ];
 
+  */
+
+  const configModules: ConfigModule[] = [
+    {
+      id: 1,
+      title: "Email Configuration",
+      description: "SMTP & Notification Settings",
+      icon: "📮", // Thay vì ✉️
+      status: "active",
+    },
+    {
+      id: 2,
+      title: "File Path Management",
+      description: "Storage & Directory Config",
+      icon: "📋", // Thay vì 🗂️
+      status: "active",
+    },
+    {
+      id: 3,
+      title: "MRBTS Information",
+      description: "Network & Topology Settings",
+      icon: "🌐", // Thay vì 📶
+      status: "active",
+    },
+    {
+      id: 4,
+      title: "Reset Site Limit",
+      description: "Safety Threshold Controls",
+      icon: "🔒", // Thay vì ⚖️
+      status: "active",
+    },
+    {
+      id: 5,
+      title: "Scheduler Configuration",
+      description: "Automated Task Management",
+      icon: "⚡", // Thay vì 🕐
+      status: "active",
+    },
+    {
+      id: 6,
+      title: "Database Settings",
+      description: "Connection & Backup Config",
+      icon: "💾", // Thay vì 💾
+      status: "maintenance",
+    },
+  ];
+
+  /*
+
+const configModules: ConfigModule[] = [
+  {
+    id: 1,
+    title: "Email Configuration",
+    description: "SMTP & Notification Settings",
+    svgPath: "M3 8L10.89 13.26C11.2 13.45 11.6 13.45 11.91 13.26L20 8M4 6H20C21.1 6 22 6.9 22 8V16C22 17.1 21.1 18 20 18H4C2.9 18 2 17.1 2 16V8C2 6.9 2.9 6 4 6Z",
+    status: "active",
+  },
+  {
+    id: 2,
+    title: "File Path Management",
+    description: "Storage & Directory Config",
+    svgPath: "M13 2L3 14H12L11 22L21 10H12L13 2Z",
+    status: "active",
+  },
+  {
+    id: 3,
+    title: "MRBTS Information",
+    description: "Network & Topology Settings",
+    svgPath: "M17 21V19C17 17.9 16.1 17 15 17H9C7.9 17 7 17.9 7 19V21M12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11ZM21 8V16L18 14L15 16V8C15 6.9 15.9 6 17 6H19C20.1 6 21 6.9 21 8Z",
+    status: "active",
+  },
+  {
+    id: 4,
+    title: "Reset Site Limit",
+    description: "Safety Threshold Controls",
+    svgPath: "M12 22S8 18 8 13V7L12 3L16 7V13C16 18 12 22 12 22Z",
+    status: "active",
+  },
+  {
+    id: 5,
+    title: "Scheduler Configuration",
+    description: "Automated Task Management",
+    svgPath: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
+    status: "active",
+  },
+  {
+    id: 6,
+    title: "Database Settings",
+    description: "Connection & Backup Config",
+    svgPath: "M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4M4 12c0 2.21 3.582 4 8 4s8-1.79 8-4",
+    status: "maintenance",
+  },
+];
+  
+  */
+
   const filteredModules = configModules.filter((module) => module.title.toLowerCase().includes(searchTerm.toLowerCase()) || module.description.toLowerCase().includes(searchTerm.toLowerCase()));
 
+  // Fix function với proper typing
   const getStatusBadge = (status: ModuleStatus) => {
-    const config = status === "active" ? { bg: "#d4edda", color: "#155724", text: "Active", border: "#c3e6cb" } : { bg: "#fff3cd", color: "#856404", text: "Maintenance", border: "#ffeaa7" };
+    const config = status === "active" ? { bg: "#d4edda", color: "#155724", text: "Active" } : { bg: "#fff3cd", color: "#856404", text: "Maintenance" };
 
     return (
       <div
@@ -98,7 +172,7 @@ const Configuration = () => {
           padding: "2px 6px",
           borderRadius: "8px",
           fontWeight: "600",
-          border: `1px solid ${config.border}`,
+          border: `1px solid ${config.color}30`,
         }}
       >
         {config.text}
@@ -107,8 +181,8 @@ const Configuration = () => {
   };
 
   return (
-    <div style={{ padding: "20px", backgroundColor: "white", minHeight: "500px", maxWidth: "1200px", margin: "0 auto" }}>
-      {/* Search Bar */}
+    <div style={{ padding: "30px", backgroundColor: "white", minHeight: "500px" }}>
+      {/* Search Bar - Căn trái */}
       <div style={{ marginBottom: "30px" }}>
         <input
           type="text"
@@ -116,7 +190,7 @@ const Configuration = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{
-            width: "min(400px, 100%)",
+            width: "400px",
             padding: "12px 20px",
             border: "2px solid #e2e8f0",
             borderRadius: "8px",
@@ -124,29 +198,28 @@ const Configuration = () => {
             outline: "none",
             transition: "border-color 0.2s ease",
           }}
-          onFocus={(e) => (e.currentTarget.style.borderColor = "#7c3aed")}
-          onBlur={(e) => (e.currentTarget.style.borderColor = "#e2e8f0")}
+          onFocus={(e) => (e.target.style.borderColor = "#7c3aed")}
+          onBlur={(e) => (e.target.style.borderColor = "#e2e8f0")}
         />
-      </div>
 
-      {/* Results Count */}
-      {/*
-      <div style={{ marginBottom: "20px" }}>
-        <p style={{ color: "#64748b", fontSize: "14px", margin: "0" }}>
-          Showing {filteredModules.length} of {configModules.length} configuration modules
-        </p>
-      </div>
+        {/* Results Count */}
+        {/*
+        <div style={{ marginBottom: "20px" }}>
+          <p style={{ color: "#64748b", fontSize: "14px", margin: "0" }}>
+            Showing {filteredModules.length} of {configModules.length} configuration modules
+          </p>
+        </div>
 
-      */}
+        */}
+      </div>
 
       {/* Cards Grid */}
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
           gap: "20px",
-          maxWidth: "100%",
-          width: "100%",
+          maxWidth: "1000px",
         }}
       >
         {filteredModules.map((module) => (
@@ -155,59 +228,49 @@ const Configuration = () => {
             style={{
               position: "relative",
               background: "white",
-              border: "2px solid #f1f5f9",
-              borderRadius: "16px",
+              border: "2px solid #7c3aed",
+              borderRadius: "12px",
               padding: "20px 16px 16px 16px",
               textAlign: "center",
               cursor: "pointer",
               transition: "all 0.3s ease",
-              minHeight: "160px",
-              maxWidth: "280px",
-              width: "100%",
+              height: "160px",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
               alignItems: "center",
-              boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-            }}
-            onClick={async () => {
-              setSelectedConfig(module);
-              setShowModal(true);
-              setModalLoading(true);
-
-              try {
-                const config = configTableMapping[module.id];
-
-                const response = await fetch(config.api);
-                const data = await response.json();
-                setModalData(data);
-              } catch (error) {
-                console.error("Error:", error);
-              } finally {
-                setModalLoading(false);
-              }
+              boxShadow: "0 2px 8px rgba(124, 58, 237, 0.1)",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-8px)";
-              e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.1)";
-              e.currentTarget.style.borderColor = module.iconColor;
-              e.currentTarget.style.background = `linear-gradient(135deg, ${module.iconColor}15, ${module.iconColor}10)`;
-              // chinh do dam nhat
-              // e.currentTarget.style.background = `linear-gradient(135deg, ${module.iconColor}15, ${module.iconColor}10)`;
+              e.currentTarget.style.boxShadow = "0 12px 24px rgba(124, 58, 237, 0.2)";
+              e.currentTarget.style.background = "linear-gradient(135deg, #f3e8ff 0%, #faf5ff 100%)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 4px 6px -1px rgba(0, 0, 0, 0.1)";
-              e.currentTarget.style.borderColor = "#f1f5f9";
+              e.currentTarget.style.boxShadow = "0 2px 8px rgba(124, 58, 237, 0.1)";
               e.currentTarget.style.background = "white";
             }}
           >
+            {/* Folder Tab */}
+            <div
+              style={{
+                position: "absolute",
+                top: "-2px",
+                left: "20px",
+                width: "40px",
+                height: "12px",
+                background: "#7c3aed",
+                borderRadius: "4px 4px 0 0",
+              }}
+            />
+
             {/* Status Dot */}
             <div
               style={{
                 position: "absolute",
-                top: "12px",
-                right: "12px",
+                top: "8px",
+                right: "8px",
                 width: "8px",
                 height: "8px",
                 background: module.status === "active" ? "#10b981" : "#f59e0b",
@@ -226,29 +289,21 @@ const Configuration = () => {
                 alignItems: "center",
               }}
             >
-              {/* FontAwesome Icon */}
               <div
                 style={{
-                  width: "56px",
-                  height: "56px",
-                  margin: "0 0 12px 0",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: module.iconColor,
-                  borderRadius: "16px",
-                  boxShadow: `0 8px 25px ${module.iconColor}40`,
+                  fontSize: "48px",
+                  margin: "0 0 8px 0",
+                  filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))",
                 }}
               >
-                <FontAwesomeIcon icon={module.icon} style={{ fontSize: "24px", color: "white" }} />
+                {module.icon}
               </div>
-
               <h3
                 style={{
                   fontSize: "15px",
-                  fontWeight: "600",
-                  color: "#111827",
-                  margin: "0 0 6px 0",
+                  fontWeight: "700",
+                  color: "#1a202c",
+                  margin: "0 0 4px 0",
                   lineHeight: "1.2",
                   textAlign: "center",
                 }}
@@ -257,11 +312,12 @@ const Configuration = () => {
               </h3>
               <p
                 style={{
-                  fontSize: "12px",
-                  color: "#6b7280",
+                  fontSize: "11px",
+                  color: "#64748b",
                   margin: "0",
                   lineHeight: "1.3",
                   textAlign: "center",
+                  fontWeight: "500",
                 }}
               >
                 {module.description}
@@ -275,7 +331,7 @@ const Configuration = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                marginTop: "8px",
+                marginTop: "4px",
               }}
             >
               {getStatusBadge(module.status)}
