@@ -1,9 +1,8 @@
-// src/components/RNOC1/R005-SleepingCell/HomeSleepingCell.tsx
 import React from "react";
 import { Container } from "react-bootstrap";
-import "./R005HomeSleepingCell.module.scss";
-import R005Header from "./Designer/R005Header";
-import R005Tabs from "./Designer/R005Tabs";
+import "./R003HomePRBsLoadBalancing.module.scss";
+import R003Header from "./Designer/R003Header";
+import R003Tabs from "./Designer/R003Tabs";
 
 const HomeSleepingCell: React.FC = () => {
   return (
@@ -16,10 +15,10 @@ const HomeSleepingCell: React.FC = () => {
     >
       <Container fluid>
         {/* Modern Header */}
-        <R005Header />
+        <R003Header />
 
         {/* Modern Tabs with Real Components */}
-        <R005Tabs />
+        <R003Tabs />
       </Container>
     </div>
   );

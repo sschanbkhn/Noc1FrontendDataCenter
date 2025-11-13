@@ -2,7 +2,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useState, useEffect, useCallback } from "react";
 // import { useLocation, useNavigate } from 'react-router-dom';
-import API_CONFIG from "../Designer/ApiR005SleepingCellConfig";
+import API_CONFIG from "./ApiR003PRBLoadBalancingConfig";
 
 // Import icons using require to avoid type issues
 const FiBarChart = require("react-icons/fi").FiBarChart;
@@ -15,19 +15,19 @@ let Monitor: any = null;
 let Configuration: any = null;
 
 try {
-  Dashboard = require("../Dashboard/R005Dashboard").default;
+  Dashboard = require("../Dashboard/R003Dashboard").default;
 } catch {
   Dashboard = null;
 }
 
 try {
-  Monitor = require("../Monitor/R005Monitor").default;
+  Monitor = require("../Monitor/R003Monitor").default;
 } catch {
   Monitor = null;
 }
 
 try {
-  Configuration = require("../Configuration/R005Configuration").default;
+  Configuration = require("../Configuration/R003Configuration").default;
 } catch {
   Configuration = null;
 }
@@ -41,7 +41,7 @@ interface ApiResponse {
   recheckCells: number;
 }
 
-const R005Tabs: React.FC = () => {
+const R003Tabs: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -185,7 +185,8 @@ const fetchDashboardData = async () => {
       textColor: "text-emerald-700",
       borderColor: "border-emerald-200",
       shadowColor: "shadow-emerald-200/50",
-      color: "#059669",
+      //color: "#059669",
+      color: " #f97316",
     },
     {
       id: "configuration",
@@ -295,7 +296,7 @@ const fetchDashboardData = async () => {
           lineHeight: "1.6",
         }}
       >
-        Comprehensive analytics and real-time metrics for R005 Sleeping Cell Management
+        Comprehensive analytics and real-time metrics for R003 PRBs Load Balancing Cell Management
       </p>
 
       <div
@@ -333,7 +334,7 @@ const fetchDashboardData = async () => {
               fontWeight: "600",
             }}
           >
-            Sleeping Cells
+            PRBs Load Balancing
           </div>
         </div>
 
@@ -482,7 +483,7 @@ const fetchDashboardData = async () => {
                 lineHeight: "1.6",
               }}
             >
-              Comprehensive analytics and real-time metrics for your R005 Sleeping Cell Management system
+              Comprehensive analytics and real-time metrics for your R003 PRBs Based Cell Load Management system
             </p>
             <div
               style={{
@@ -624,7 +625,7 @@ const fetchDashboardData = async () => {
                 lineHeight: "1.6",
               }}
             >
-              24/7 surveillance and instant alerts for sleeping cell detection and recovery operations
+              24/7 surveillance and instant alerts for PRBs over load detection and recovery operations
             </p>
             <div
               style={{
@@ -648,7 +649,8 @@ const fetchDashboardData = async () => {
                   style={{
                     fontSize: "28px",
                     fontWeight: "bold",
-                    color: "#059669",
+                    // color: "#059669",
+                    color: "#f97316",
                     marginBottom: "8px",
                   }}
                 >
@@ -657,7 +659,8 @@ const fetchDashboardData = async () => {
                 <div
                   style={{
                     fontSize: "14px",
-                    color: "#047857",
+                    // color: "#047857",
+                    color: "#f97316",
                     fontWeight: "600",
                   }}
                 >
@@ -677,7 +680,8 @@ const fetchDashboardData = async () => {
                   style={{
                     fontSize: "28px",
                     fontWeight: "bold",
-                    color: "#059669",
+                    // color: "#059669",
+                    color: "#f97316",
                     marginBottom: "8px",
                   }}
                 >
@@ -686,7 +690,8 @@ const fetchDashboardData = async () => {
                 <div
                   style={{
                     fontSize: "14px",
-                    color: "#047857",
+                    // color: "#047857",
+                    color: "#f97316",
                     fontWeight: "600",
                   }}
                 >
@@ -737,7 +742,7 @@ const fetchDashboardData = async () => {
                 lineHeight: "1.6",
               }}
             >
-              Advanced settings and customization options for optimal sleeping cell management performance
+              Advanced settings and customization options for optimal PRBs load of cell management performance
             </p>
             <div
               style={{
@@ -1046,7 +1051,7 @@ const fetchDashboardData = async () => {
                   width: "56px",
                   height: "56px",
                   borderRadius: "16px",
-                  background: activeTab === "dashboard" ? "#2563eb" : activeTab === "monitor" ? "#059669" : "#7c3aed",
+                  background: activeTab === "dashboard" ? "#2563eb" : activeTab === "monitor" ? "#f97316" : "#7c3aed",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -1093,7 +1098,7 @@ const fetchDashboardData = async () => {
                     color: "#1a202c",
                   }}
                 >
-                  {activeTab === "dashboard" ? "Sleeping Cell - Dashboard" : activeTab === "monitor" ? "Sleeping Cell - Monitor" : "Sleeping Cell - Configuration  "}
+                  {activeTab === "dashboard" ? "Cell PRBs Load - Dashboard" : activeTab === "monitor" ? "PRBs Load Cell - Monitor" : "PRBs Load Cell - Configuration  "}
                 </h2>
                 <p
                   style={{
@@ -1102,7 +1107,7 @@ const fetchDashboardData = async () => {
                     fontSize: "14px",
                   }}
                 >
-                  {activeTab === "dashboard" ? "Sleeping cell detection and recovery overview" : activeTab === "monitor" ? "Archive Data Analysis" : "System settings and parameters"}
+                  {activeTab === "dashboard" ? "PRBs over load detection and recovery overview" : activeTab === "monitor" ? "Archive Data Analysis" : "System settings and parameters"}
                 </p>
 
                 {/* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
@@ -1218,4 +1223,4 @@ const fetchDashboardData = async () => {
   );
 };
 
-export default R005Tabs;
+export default R003Tabs;

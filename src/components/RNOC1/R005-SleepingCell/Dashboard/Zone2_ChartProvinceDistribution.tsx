@@ -69,6 +69,8 @@ const Zone2_ChartProvinceDistribution: React.FC<Zone2_ChartProvinceDistributionP
   const [distributionLoading, setDistributionLoading] = useState(true);
   const [distributionError, setDistributionError] = useState<string | null>(null);
 
+  let maxcell_Process: number | undefined;
+
   // Fetch 14 days trend data
   useEffect(() => {
     let isMounted = true; // ← THÊM FLAG
@@ -391,7 +393,8 @@ const Zone2_ChartProvinceDistribution: React.FC<Zone2_ChartProvinceDistributionP
                             const barHeight = calculateBarHeight(province.totalCells, maxValue);
                             const color = getProvinceColor(index);
                             const percentage = maxValue > 0 ? Math.round((province.totalCells / distributionData.data.reduce((sum: number, p: any) => sum + p.totalCells, 0)) * 100) : 0;
-
+                            let maxcell_Process = Math.round(distributionData.data.reduce((sum: number, p: any) => sum + p.totalCells, 0));
+                            console.log("maxcell_Process:", maxcell_Process);
                             return (
                               <div key={province.province} className="text-center">
                                 <div className="position-relative">
@@ -459,7 +462,7 @@ const Zone2_ChartProvinceDistribution: React.FC<Zone2_ChartProvinceDistributionP
                             fontWeight: "500",
                           }}
                         >
-                          Total: <span className="fw-bold">64 sleeping cells</span> across 6 provinces
+                          Total: <span className="fw-bold">{(maxcell_Process = Math.round(distributionData.data.reduce((sum: number, p: any) => sum + p.totalCells, 0)))} sleeping cells</span> across {headerStats.totalProvinces} provinces
                         </small>
                       </div>
                     </Card.Body>

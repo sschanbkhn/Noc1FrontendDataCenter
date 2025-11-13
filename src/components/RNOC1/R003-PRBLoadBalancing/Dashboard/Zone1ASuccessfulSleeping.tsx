@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Row, Col, Modal, Table } from "react-bootstrap";
-import API_CONFIG from "../Designer/ApiR005SleepingCellConfig";
+import API_CONFIG from "../Designer/ApiR003PRBLoadBalancingConfig";
 import * as ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 

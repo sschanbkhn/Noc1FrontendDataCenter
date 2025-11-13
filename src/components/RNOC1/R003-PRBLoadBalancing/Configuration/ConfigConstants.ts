@@ -1,6 +1,6 @@
 import { faEnvelope, faFolderOpen, faNetworkWired, faShieldAlt, faClock, faDatabase, faServer, faChartLine } from "@fortawesome/free-solid-svg-icons";
 import { ConfigModule } from "./ConfigTypes";
-import API_CONFIG from "../Designer/ApiR005SleepingCellConfig";
+import API_CONFIG from "../Designer/ApiR003PRBLoadBalancingConfig";
 
 export const configTableMapping: { [key: number]: { table: string; api: string; title: string } } = {
   1: {
@@ -64,7 +64,7 @@ export const configModules: ConfigModule[] = [
   },
   {
     id: 3,
-    title: "MRBTS Information",
+    title: "Threshold Setting",
     description: "Network & Topology Settings",
     icon: faNetworkWired,
     iconColor: "#f59e0b",
@@ -72,7 +72,7 @@ export const configModules: ConfigModule[] = [
   },
   {
     id: 4,
-    title: "Reset Site Limit",
+    title: "CR Cell Limit",
     description: "Safety Threshold Controls",
     icon: faShieldAlt,
     iconColor: "#ef4444",

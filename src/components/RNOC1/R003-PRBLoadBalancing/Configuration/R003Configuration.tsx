@@ -1,4 +1,3 @@
-// R005Configuration.tsx - Updated Main File
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -15,43 +14,42 @@ import { getStatusBadge, createEmptyFormData } from "./ConfigUtilsR005";
 // Import hooks
 import { useConfigData } from "./useConfigData";
 
-// Import components - Updated imports
+// Import components
 import DataTableModal from "./DataTableModal";
 import AddEditModal from "./AddEditModal";
 import ArchiveModal from "./ArchiveModal";
-import SchedulerModal from "./SchedulerModal";
+import MRBTSModal from "./MRBTSModal";
 
-const R005Configuration: React.FC = () => {
+const Configuration: React.FC = () => {
   // States for search and modal management
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [showSchedulerModal, setShowSchedulerModal] = useState(false);
   const [selectedConfig, setSelectedConfig] = useState<ConfigModule | null>(null);
   const [showAddEditModal, setShowAddEditModal] = useState(false);
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
   const [formData, setFormData] = useState<any>({});
+  const [showMRBTSModal, setShowMRBTSModal] = useState(false);
 
   // Custom hook for data management
   const { modalData, modalLoading, modalSearchTerm, loadConfigData, handleModalSearch, handleDelete, handleSave } = useConfigData();
 
   // Filter modules based on search
-  const filteredModules = configModules.filter((module: ConfigModule) => module.title.toLowerCase().includes(searchTerm.toLowerCase()) || module.description.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredModules = configModules.filter((module) => module.title.toLowerCase().includes(searchTerm.toLowerCase()) || module.description.toLowerCase().includes(searchTerm.toLowerCase()));
 
   // Handle card click - route to appropriate modal
   const handleCardClick = async (module: ConfigModule) => {
     setSelectedConfig(module);
 
     switch (module.id) {
-      case 5: // Scheduler - special modal with date picker
-        setShowSchedulerModal(true);
-        break;
-
       case 8: // Detail Archive Reports - special modal
         setShowArchiveModal(true);
         break;
-
-      default: // Normal modules (1,2,3,4,6,7)
+      case 3: // MRBTS - special modal
+        setShowMRBTSModal(true);
+        await loadConfigData(module.id);
+        break;
+      default: // Normal modules (1,2,4,5,6,7)
         setShowModal(true);
         await loadConfigData(module.id);
         break;
@@ -61,7 +59,6 @@ const R005Configuration: React.FC = () => {
   // Handle add new item
   const handleAddNew = () => {
     setEditingItem(null);
-
     if (modalData && modalData.length > 0) {
       const sampleItem = modalData[0];
       const emptyForm = createEmptyFormData(sampleItem, selectedConfig!.id);
@@ -69,7 +66,6 @@ const R005Configuration: React.FC = () => {
     } else {
       setFormData({});
     }
-
     setShowAddEditModal(true);
   };
 
@@ -89,6 +85,7 @@ const R005Configuration: React.FC = () => {
       setShowAddEditModal(false);
       setEditingItem(null);
       setFormData({});
+      await loadConfigData(selectedConfig.id);
     }
   };
 
@@ -101,12 +98,23 @@ const R005Configuration: React.FC = () => {
   // Close all modals
   const closeAllModals = () => {
     setShowModal(false);
-    setShowSchedulerModal(false);
+    setShowMRBTSModal(false);
     setShowAddEditModal(false);
     setShowArchiveModal(false);
     setSelectedConfig(null);
     setEditingItem(null);
     setFormData({});
+    handleModalSearch(""); // Reset search term
+  };
+
+  // ============================================
+  // ← THÊM FUNCTION NÀY
+  // ============================================
+  const handleViewTrend = (item: any) => {
+    console.log("View trend for item:", item);
+    // Configuration không cần trend modal
+    // Để trống hoặc thông báo
+    alert("Tính năng View Trend chỉ có ở Dashboard");
   };
 
   return (
@@ -152,7 +160,6 @@ const R005Configuration: React.FC = () => {
           />
         </div>
       </div>
-
       {/* Cards Grid */}
       <div
         style={{
@@ -279,7 +286,6 @@ const R005Configuration: React.FC = () => {
           </div>
         ))}
       </div>
-
       {/* Empty State */}
       {filteredModules.length === 0 && (
         <div
@@ -312,21 +318,18 @@ const R005Configuration: React.FC = () => {
         </div>
       )}
 
-      {/* Modals */}
+      {/* Normal Modal */}
+      <DataTableModal show={showModal} selectedConfig={selectedConfig} modalData={modalData} modalLoading={modalLoading} onSearch={handleModalSearch} onClose={closeAllModals} onView={handleViewTrend} />
 
-      {/* Standard Data Table Modal */}
-      <DataTableModal show={showModal} selectedConfig={selectedConfig} modalData={modalData} modalLoading={modalLoading} modalSearchTerm={modalSearchTerm} onSearch={handleModalSearch} onClose={closeAllModals} onAdd={handleAddNew} onEdit={handleEditItem} onDelete={handleDeleteItem} />
+      {/* MRBTS Modal - search term riêng */}
+      <MRBTSModal show={showMRBTSModal} selectedConfig={selectedConfig} modalData={modalData} modalLoading={modalLoading} modalSearchTerm={modalSearchTerm} onSearch={handleModalSearch} onClose={closeAllModals} onAdd={handleAddNew} onEdit={handleEditItem} onDelete={handleDeleteItem} onRefresh={() => selectedConfig && loadConfigData(selectedConfig.id)} />
 
-      {/* Scheduler Modal with Date Picker */}
-      <SchedulerModal show={showSchedulerModal} selectedConfig={selectedConfig} onClose={closeAllModals} onEdit={handleEditItem} onAdd={handleAddNew} />
-
-      {/* Archive Modal with Full Features */}
+      {/* Archive Modal */}
       <ArchiveModal show={showArchiveModal} onClose={closeAllModals} onEdit={handleEditItem} onAdd={handleAddNew} />
-
-      {/* Add/Edit Modal */}
+      {/* a  c d e f gh  12345 1809*/}
       <AddEditModal show={showAddEditModal} selectedConfig={selectedConfig} editingItem={editingItem} formData={formData} setFormData={setFormData} onSave={handleSaveForm} onClose={() => setShowAddEditModal(false)} />
     </div>
   );
 };
 
-export default R005Configuration;
+export default Configuration;

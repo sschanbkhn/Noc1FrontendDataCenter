@@ -1,42 +1,61 @@
 // DataTableModal.tsx - Improved Version
 import React, { useState, useMemo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTimes, faEdit, faTrash, faDownload } from "@fortawesome/free-solid-svg-icons";
+// import { faPlus, faTimes, faEdit, faTrash, faChartLine, faDownload } from "@fortawesome/free-solid-svg-icons";
 import { ConfigModule } from "./ConfigTypes";
 import { shouldHideColumn, formatCellValue } from "./ConfigUtilsR005";
 import * as ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
+import { Modal, Table, Button } from "react-bootstrap"; // ← THÊM DÒNG NÀY
+import { faPlus, faTimes, faEdit, faTrash, faDownload, faChartLine, faSearch, faSort, faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons";
+import * as Icons from "@fortawesome/free-solid-svg-icons";
+
+import { exportToExcel } from "./ExportExcelFileUtils"; // ← Thêm dòng này
 
 interface DataTableModalProps {
   show: boolean;
   selectedConfig: ConfigModule | null;
   modalData: any[];
   modalLoading: boolean;
-  modalSearchTerm: string;
+
   onSearch: (term: string) => void;
   onClose: () => void;
-  onAdd: () => void;
-  onEdit: (item: any) => void;
-  onDelete: (id: number) => void;
+  onView?: (item: any) => void; // ← THÊM DÒNG NÀY
 }
+//========================================================================
 
-const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, modalData, modalLoading, modalSearchTerm, onSearch, onClose, onAdd, onEdit, onDelete }) => {
+const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, modalData, modalLoading, onSearch, onView, onClose }) => {
   // Hooks phải ở đầu
   const [sortField, setSortField] = useState("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [pagination, setPagination] = useState({
     currentPage: 1,
-    pageSize: 10,
+    pageSize: 5, // de la 5 cho de nhin
     total: 0,
   });
+  //========================================================================
+
+  const [searchTerm, setSearchTerm] = useState<string>(""); // ← THÊM DÒNG NÀY
+  //========================================================================
+
+  // ← THÊM useMemo NÀY TRƯỚC sortedData
+  const filteredData = useMemo(() => {
+    if (!searchTerm) return modalData || [];
+
+    return (modalData || []).filter((item) => Object.values(item).some((value) => String(value).toLowerCase().includes(searchTerm.toLowerCase())));
+  }, [modalData, searchTerm]);
 
   // SỬA: Thay filteredData thành modalData
   const sortedData = useMemo(() => {
-    if (!sortField) return modalData || [];
+    // if (!sortField) return modalData || [];
+    if (!sortField) return filteredData; // ← ĐỔI modalData → filteredData
 
-    return [...(modalData || [])].sort((a, b) => {
+    // return [...(modalData || [])].sort((a, b) => {
+    return [...filteredData].sort((a, b) => {
+      // ← ĐỔI modalData → filteredData
       let aVal = a[sortField];
       let bVal = b[sortField];
+      //========================================================================
 
       // Nếu field là STT hoặc số, convert sang number
       if (sortField.toLowerCase().includes("stt") || sortField.toLowerCase().includes("no") || !isNaN(Number(aVal))) {
@@ -49,11 +68,15 @@ const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, m
 
       if (sortDirection === "asc") {
         return aVal > bVal ? 1 : -1;
-      } else {
+      }
+      //========================================================================
+      else {
         return aVal < bVal ? 1 : -1;
       }
     });
-  }, [modalData, sortField, sortDirection]);
+  }, [filteredData, sortField, sortDirection]); // ← ĐỔI modalData → filteredData
+  // }, [modalData, sortField, sortDirection]);
+  //========================================================================
 
   const paginatedData = useMemo(() => {
     if (!sortedData) return [];
@@ -63,6 +86,7 @@ const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, m
   }, [sortedData, pagination.currentPage, pagination.pageSize]);
 
   const totalPages = useMemo(() => Math.ceil((sortedData?.length || 0) / pagination.pageSize), [sortedData?.length, pagination.pageSize]);
+  //========================================================================
 
   if (!show || !selectedConfig) return null;
 
@@ -78,7 +102,28 @@ const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, m
     setSortField(field);
     setSortDirection(newDirection);
   };
+  //========================================================================
 
+  const handleExportExcel = async () => {
+    if (!modalData || modalData.length === 0) {
+      alert("Không có dữ liệu để export");
+      return;
+    }
+
+    try {
+      await exportToExcel({
+        data: modalData,
+        sheetName: selectedConfig?.title || "Data",
+        fileName: selectedConfig?.title || "export",
+        exportType: "multiple",
+      });
+    } catch (error) {
+      console.error("Export error:", error);
+      alert("Lỗi khi export Excel!");
+    }
+  };
+
+  /*
   const exportToExcel = async () => {
     if (!modalData || modalData.length === 0) {
       alert("Không có dữ liệu để export");
@@ -91,12 +136,14 @@ const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, m
     // Headers
     const headers = Object.keys(modalData[0]).filter((key) => !shouldHideColumn(key, selectedConfig.id));
     worksheet.addRow(headers);
+    //========================================================================
 
     // Data rows
     modalData.forEach((item: any) => {
       const row = headers.map((header) => item[header] || "");
       worksheet.addRow(row);
     });
+    //========================================================================
 
     // Save
     const buffer = await workbook.xlsx.writeBuffer();
@@ -105,8 +152,24 @@ const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, m
     });
     saveAs(blob, `${selectedConfig.title || "data"}_export.xlsx`);
   };
+  */
+  //========================================================================
 
   const visibleColumns = modalData.length > 0 ? Object.keys(modalData[0]).filter((key) => !shouldHideColumn(key, selectedConfig.id)) : [];
+  //========================================================================
+
+  // 2. ← THÊM handleViewTrend Ở ĐÂY
+  const handleViewTrend = (item: any) => {
+    if (onView) {
+      onView(item);
+    }
+  };
+  //========================================================================
+
+  // ket thuc khai bao cac bien
+  //========================================================================
+  //************************************************************************
+  //========================================================================
 
   return (
     <div
@@ -170,22 +233,8 @@ const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, m
           {/* Action Buttons */}
           <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
             <button
-              onClick={onAdd}
-              style={{
-                background: "rgba(255,255,255,0.2)",
-                border: "none",
-                borderRadius: "8px",
-                padding: "8px 12px",
-                color: "white",
-                fontSize: "12px",
-                cursor: "pointer",
-              }}
-            >
-              <FontAwesomeIcon icon={faPlus} style={{ marginRight: "6px" }} />
-              Add New
-            </button>
-            <button
-              onClick={exportToExcel}
+              /* onClick={exportToExcel} */
+              onClick={handleExportExcel} // ← ĐỔI TÊN
               style={{
                 background: "rgba(255,255,255,0.2)",
                 border: "none",
@@ -227,20 +276,23 @@ const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, m
             gap: "12px",
           }}
         >
-          <input
-            type="text"
-            value={modalSearchTerm}
-            onChange={(e) => onSearch(e.target.value)}
-            placeholder="Search records..."
-            style={{
-              flex: 1,
-              minWidth: "200px",
-              padding: "8px 12px",
-              border: "1px solid #d1d5db",
-              borderRadius: "8px",
-              fontSize: "14px",
-            }}
-          />
+          {/* ← THÊM PHẦN NÀY */}
+          <div style={{ flex: 1, maxWidth: "400px" }}>
+            <input
+              type="text"
+              placeholder="🔍 Tìm kiếm..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "8px 12px",
+                border: "1px solid #d1d5db",
+                borderRadius: "8px",
+                fontSize: "14px",
+                outline: "none",
+              }}
+            />
+          </div>
 
           <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
             <div
@@ -322,8 +374,11 @@ const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, m
                           fontWeight: "600",
                           color: selectedConfig.iconColor,
                           border: "1px solid #e5e7eb", // Thêm border cho header cells
-                          maxWidth: "200px",
-                          minWidth: "100px",
+                          maxWidth: "300px",
+                          minWidth: "60px",
+                          // ← CHỈNH ĐỘNG THEO TÊN CỘT
+                          // minWidth: key.toLowerCase().includes("name") || key.toLowerCase().includes("dn") ? "200px" : key.toLowerCase().includes("id") || key.toLowerCase().includes("stt") ? "80px" : key.toLowerCase().includes("date") || key.toLowerCase().includes("time") ? "150px" : key.toLowerCase().includes("prb") || key.toLowerCase().includes("percent") ? "100px" : "120px",
+                          // maxWidth: key.toLowerCase().includes("name") || key.toLowerCase().includes("dn") ? "350px" : key.toLowerCase().includes("id") || key.toLowerCase().includes("stt") ? "100px" : "250px",
                         }}
                       >
                         {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, " $1")}
@@ -365,8 +420,11 @@ const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, m
                               key={key}
                               style={{
                                 padding: "12px",
-                                maxWidth: "200px", // Giới hạn độ rộng
+                                maxWidth: "300px", // Giới hạn độ rộng
                                 minWidth: "80px",
+                                // ← CHỈNH ĐỘNG GIỐNG <th>
+                                // minWidth: key.toLowerCase().includes("mrbts_name") || key.toLowerCase().includes("dn") ? "200px" : key.toLowerCase().includes("id") || key.toLowerCase().includes("stt") ? "80px" : key.toLowerCase().includes("date") || key.toLowerCase().includes("time") ? "150px" : key.toLowerCase().includes("prb") || key.toLowerCase().includes("percent") ? "100px" : "100px",
+                                // maxWidth: key.toLowerCase().includes("mrbts_name") || key.toLowerCase().includes("dn") ? "500px" : key.toLowerCase().includes("id") || key.toLowerCase().includes("stt") ? "100px" : "250px",
                                 verticalAlign: "top",
                                 border: "1px solid #e5e7eb", // Thêm border cho cells
                               }}
@@ -374,7 +432,7 @@ const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, m
                               <div
                                 title={shouldShowTooltip ? cellValue : undefined} // Tooltip
                                 style={{
-                                  maxWidth: "180px", // Giới hạn width của content
+                                  maxWidth: "202px", // Giới hạn width của content
                                   overflow: "hidden",
                                   textOverflow: "ellipsis",
                                   whiteSpace: "nowrap",
@@ -387,6 +445,15 @@ const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, m
                           );
                         })}
 
+                        {/* ← THÊM CỘT NÀY */}
+                        <td style={{ textAlign: "center" }}>
+                          <Button size="sm" variant="info" onClick={() => handleViewTrend(item)} title="Xem trend KPI theo giờ">
+                            <FontAwesomeIcon icon={faChartLine} /> View
+                          </Button>
+                        </td>
+
+                        {/*
+
                         <td
                           style={{
                             padding: "8px",
@@ -395,7 +462,7 @@ const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, m
                             width: "150px",
                           }}
                         >
-                          {/* Sắp xếp Edit và Delete trên cùng một dòng */}
+                          {/* Sắp xếp Edit và Delete trên cùng một dòng 
                           <div
                             style={{
                               display: "flex",
@@ -403,46 +470,10 @@ const DataTableModal: React.FC<DataTableModalProps> = ({ show, selectedConfig, m
                               justifyContent: "center",
                               alignItems: "center",
                             }}
-                          >
-                            <button
-                              onClick={() => onEdit(item)}
-                              style={{
-                                background: selectedConfig.iconColor,
-                                color: "white",
-                                border: "none",
-                                borderRadius: "4px",
-                                padding: "6px 8px",
-                                fontSize: "11px",
-                                cursor: "pointer",
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "4px",
-                              }}
-                            >
-                              <FontAwesomeIcon icon={faEdit} style={{ fontSize: "10px" }} />
-                              Edit
-                            </button>
-
-                            <button
-                              onClick={() => onDelete(item.id)}
-                              style={{
-                                background: "#ef4444",
-                                color: "white",
-                                border: "none",
-                                borderRadius: "4px",
-                                padding: "6px 8px",
-                                fontSize: "11px",
-                                cursor: "pointer",
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "4px",
-                              }}
-                            >
-                              <FontAwesomeIcon icon={faTrash} style={{ fontSize: "10px" }} />
-                              Delete
-                            </button>
-                          </div>
+                          ></div>
                         </td>
+
+                        */}
                       </tr>
                     ))
                   ) : (

@@ -92,7 +92,7 @@ export const exportToExcel = async (options: ExportOptions): Promise<void> => {
       headerRow.height = 25;
 
       // Style data với màu theo field
-      dataRow.height = 20;
+      dataRow.height = 25;
       dataRow.eachCell((cell, colNumber) => {
         const fieldName = headers[colNumber - 1];
         const bgColor = getFieldColor(fieldName);
@@ -155,7 +155,7 @@ export const exportToExcel = async (options: ExportOptions): Promise<void> => {
       data.forEach((item, rowIndex) => {
         const values = headers.map((header) => item[header] || "");
         const dataRow = worksheet.addRow(values);
-        dataRow.height = 20; // ← THÊM DÒNG NÀY để fix chiều cao
+        dataRow.height = 25; // ← THÊM DÒNG NÀY để fix chiều cao
 
         // Alternate row colors
         const bgColor = rowIndex % 2 === 0 ? "f9fafb" : "ffffff";

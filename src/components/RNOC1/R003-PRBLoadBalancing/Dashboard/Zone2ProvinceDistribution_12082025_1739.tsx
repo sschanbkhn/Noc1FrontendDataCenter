@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart, Bar, AreaChart, Area } from "recharts";
 import { Card, Row, Col } from "react-bootstrap";
-import API_CONFIG from "../Designer/ApiR005SleepingCellConfig";
+import API_CONFIG from "../Designer/ApiR003PRBLoadBalancingConfig";
 
 interface Zone2_ChartProvinceDistributionProps {
   dashboardData?: any;

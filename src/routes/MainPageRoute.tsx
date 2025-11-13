@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import Home from "components/Home";
 import { Config } from "components/System";
 import { Account, Organ, Permission, Role } from "components/User";
-import {
-  CategoryAlarmCode,
-  CategoryAlarmLevel,
-  CategoryStatus,
-  CategoryAlarmType,
-} from "components/Category";
+import { CategoryAlarmCode, CategoryAlarmLevel, CategoryStatus, CategoryAlarmType } from "components/Category";
 import menu_config from "assets/json/menu_config.json";
 import Page404 from "components/common/Page404";
 import Profile from "components/common/Profile";
@@ -21,17 +14,7 @@ import { Cookie } from "helpers/cookie";
 import { IUserInfo } from "models/Apps";
 import Setting from "components/common/Setting";
 import Support from "components/common/Support";
-import {
-  CableManagement,
-  ConfigurationLogs,
-  CurenAlarm,
-  DevicePorts,
-  Devices,
-  DeviceTypes,
-  HistoryCurenAlarm,
-  Manufacturers,
-  NetworkLinks,
-} from "components/Network";
+import { CableManagement, ConfigurationLogs, CurenAlarm, DevicePorts, Devices, DeviceTypes, HistoryCurenAlarm, Manufacturers, NetworkLinks } from "components/Network";
 import MapComponent from "components/Network/LinksMaps/Map";
 import Charts from "uielements/charts/Charts";
 import CenterDashboard from "../DashboardAutomation/CenterDashboard";
@@ -64,49 +47,30 @@ import ConfigReport from "components/RNOC1/R009";
 
 import HomeSleepingCell from "components/RNOC1/R005-SleepingCell/R005HomeSleepingCell";
 
-import R005Monitor from '../components/RNOC1/R005-SleepingCell/Monitor/R005Monitor';
-import R005Configuration from '../components/RNOC1/R005-SleepingCell/Configuration/R005Configuration';
+// import R005Monitor from "../components/RNOC1/R005-SleepingCell/Monitor/R005Monitor";
+// import R005Configuration from "../components/RNOC1/R005-SleepingCell/Configuration/R005Configuration";
 
-
-
-
-
+import HomePRBLoadBalancing from "components/RNOC1/R003-PRBLoadBalancing/R003HomePRBLoadBalancing";
 
 interface Props {
   Apps: any;
 }
 
 const MainPageRoute = (props: Props) => {
-
-
-  
   useEffect(() => {
-  const userInfo = {
-    UserName: "admin",
-    RoleName: "Admin", 
-    Role: "admin",
-    Menus: [
-      "Home", "User", "System", "Category", "NetworkRnoc", "NetworkSnoc", 
-      "NetworkInoc", "NetworkTnoc", "Anm", "Organ", "Account", "Role", 
-      "Permission", "Config", "CategoryStatus", "CategoryAlarmCode", 
-      "CategoryAlarmLevel", "CategoryAlarmType", "DashboardRnoc", 
-      "DashboardRnocRoom", "DashboardR001", "CableManagement", 
-      "ConfigurationLogs", "CurenAlarm", "HistoryCurenAlarm", 
-      "DevicePorts", "ConfigReport", "hc-dashboard", "hc-dashboard-dns", 
-      "hc-dashboard-sbc", "LinksMaps", "ucppoe", "anm_uc1", "TestSleeping"
-    ]
-  };
-  
-  // Set cả 2 cookies
-  Cookie.setCookie("UserInfo", JSON.stringify(userInfo), 7);
-  Cookie.setCookie("Token", "fake-token-bypass", 7); // ← Thêm dòng này!
-  
-  console.log("✅ Full auth bypass set");
-}, []);
+    const userInfo = {
+      UserName: "admin",
+      RoleName: "Admin",
+      Role: "admin",
+      Menus: ["Home", "User", "System", "Category", "NetworkRnoc", "NetworkSnoc", "NetworkInoc", "NetworkTnoc", "Anm", "Organ", "Account", "Role", "Permission", "Config", "CategoryStatus", "CategoryAlarmCode", "CategoryAlarmLevel", "CategoryAlarmType", "DashboardRnoc", "DashboardRnocRoom", "DashboardR001", "CableManagement", "ConfigurationLogs", "CurenAlarm", "HistoryCurenAlarm", "DevicePorts", "ConfigReport", "hc-dashboard", "hc-dashboard-dns", "hc-dashboard-sbc", "LinksMaps", "ucppoe", "anm_uc1", "TestSleeping"],
+    };
 
+    // Set cả 2 cookies
+    Cookie.setCookie("UserInfo", JSON.stringify(userInfo), 7);
+    Cookie.setCookie("Token", "fake-token-bypass", 7); // ← Thêm dòng này!
 
-
-  
+    console.log("✅ Full auth bypass set");
+  }, []);
 
   const GetPage = (code: String) => {
     switch (code) {
@@ -184,19 +148,11 @@ const MainPageRoute = (props: Props) => {
       case "hc-dashboard-sbc":
         return <SbcDashboardWithNavbar />;
 
-      case "R005SleepingCellManagement":  // ← Match với code trong menu
-         return <HomeSleepingCell />;
+      case "R005SleepingCellManagement": // ← Match với code trong menu
+        return <HomeSleepingCell />;
 
-
-
-
-
-
-
-
-
-
-
+      case "R003PRBLoadBalancing": // ← Match với code trong menu
+        return <HomePRBLoadBalancing />;
 
       default:
         return <Page404 />;
@@ -208,21 +164,13 @@ const MainPageRoute = (props: Props) => {
     for (let i = 0; i < rootMenu.length; i++) {
       let menu = rootMenu[i];
       if (IsMenuOfUser(menu)) {
-        html.push(
-          <Route key={menu.code} path={menu.url} element={GetPage(menu.code)} />
-        );
+        html.push(<Route key={menu.code} path={menu.url} element={GetPage(menu.code)} />);
       }
       if (menu.subMenu && menu.subMenu.length > 0) {
         for (let j = 0; j < menu.subMenu.length; j++) {
           let subMenu = menu.subMenu[j];
           if (IsMenuOfUser(subMenu)) {
-            html.push(
-              <Route
-                key={subMenu.code}
-                path={subMenu.url}
-                element={GetPage(subMenu.code)}
-              />
-            );
+            html.push(<Route key={subMenu.code} path={subMenu.url} element={GetPage(subMenu.code)} />);
           }
         }
       }
@@ -243,14 +191,12 @@ const MainPageRoute = (props: Props) => {
     return false;
   };
 */
-const IsMenuOfUser = (menu: any) => {
-  return true; // Show tất cả menu
-};
-
+  const IsMenuOfUser = (menu: any) => {
+    return true; // Show tất cả menu
+  };
 
   return (
     <Routes>
-
       {RouteRender()}
       <Route path="/dashboard/field/:fieldName" element={<RoomDashboard />} />
       <Route path="/dashboard" element={<CenterDashboard />} />
@@ -275,33 +221,18 @@ const IsMenuOfUser = (menu: any) => {
       <Route path="/dns/tacs" element={<TACConfigPanel />} />
       <Route path="/dns/lacracrnc" element={<DnsLacracrnc />} />
       <Route path="/sbc/dashboard" element={<SbcDashboardWithNavbar />} />
-      <Route
-        path="/sbc/CreateConnectionForm"
-        element={<CreateConnectionForm />}
-      />
+      <Route path="/sbc/CreateConnectionForm" element={<CreateConnectionForm />} />
       <Route path="/sbc/DeclareNumberForm" element={<DeclareNumberForm />} />
-      <Route
-        path="/sbc/RoutingDeclarationForm"
-        element={<RoutingDeclarationForm />}
-      />
-      <Route
-        path="/sbc/RequestHistoryTable"
-        element={<RequestHistoryTable />}
-      />
+      <Route path="/sbc/RoutingDeclarationForm" element={<RoutingDeclarationForm />} />
+      <Route path="/sbc/RequestHistoryTable" element={<RequestHistoryTable />} />
 
-      
-
-<Route path="/sleeping-cell" element={<HomeSleepingCell />} />
-{/* <Route path="/sleeping-cell/monitor" element={<R005Monitor />} />           // ← ADD THIS
+      <Route path="/sleeping-cell" element={<HomeSleepingCell />} />
+      {/* <Route path="/sleeping-cell/monitor" element={<R005Monitor />} />           // ← ADD THIS
 <Route path="/sleeping-cell/configuration" element={<R005Configuration />} /> // ← ADD THIS
 
 */}
 
-
-
-
-
-
+      <Route path="/prbload-balancing" element={<HomePRBLoadBalancing />} />
     </Routes>
   );
 };

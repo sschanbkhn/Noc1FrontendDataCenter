@@ -1,14 +1,17 @@
 // src/components/RNOC1/R005-SleepingCell/Dashboard/Dashboard.tsx
 // import React from 'react';
 import { Container, Row, Col, Card, Button, Badge, ProgressBar } from "react-bootstrap";
-import "./R005Dashboard.css"; // Import CSS file
+import "./R003Dashboard.css"; // Import CSS file
 
 import React, { useState, useEffect } from "react";
 
-import Zone1SleepingCellSummary from "./Zone1SleepingCellSummary";
-import Zone2_ChartProvinceDistribution from "./Zone2_ChartProvinceDistribution";
+import R003Zone1Summary from "./R003Zone1Summary";
+// import Zone2_ChartProvinceDistribution from "./Zone2_ChartProvinceDistribution";
 import Zone3CellsProgressChart from "./Zone3CellsProgressChart";
 import Zone4TableCells_DistributionChart from "./zone4TableCellsDistribution";
+
+// Thêm import
+import R003Zone2TrendAnalysis from "./R003Zone2TrendAnalysis";
 
 import Zone1ASuccessfulSleeping from "./Zone1ASuccessfulSleeping";
 
@@ -44,38 +47,37 @@ const Dashboard: React.FC<DashboardProps> = ({ sidebarWidth = 250, isSidebarColl
         {/* ===============================================================*/}
         {/* ZONE 1: 5 Cards - Same Row  */}
         {/* <Zone1SleepingCellSummary selectedDate={selectedDate} loading={loading} /> */}
-        <Zone1SleepingCellSummary
-          selectedDate={selectedDate}
-          loading={loading}
-          dashboardData={dashboardData} // ← THÊM DÒNG NÀY
-        />
+        <R003Zone1Summary selectedDate={selectedDate} />
         {/* ket thuc zone 1 */}
         {/* ===============================================================*/}
         {/* ===============================================================*/}
 
         {/*  bat dau zone 1A */}
         {/* ===============================================================*/}
-        <Zone1ASuccessfulSleeping selectedDate={selectedDate} loading={loading} />
+        {/* <Zone1ASuccessfulSleeping selectedDate={selectedDate} loading={loading} /> */}
         {/*  ket thuc zone 1A */}
         {/* ===============================================================*/}
-
+        {/* ===============================================================*/}
+        {/* ===============================================================*/}
         {/*  bat dau zone 2 */}
         {/* ===============================================================*/}
         {/* <Zone2ProvinceDistribution /> */}
         {/*  bat dau zone 2 */}
         {/* ===============================================================*/}
         {/* <Zone2ProvinceDistribution dashboardData={dashboardData} loading={loading} selectedDate={selectedDate} /> */}
-        <Zone2_ChartProvinceDistribution dashboardData={dashboardData} loading={loading} selectedDate={selectedDate} />
+        {/* <Zone2_ChartProvinceDistribution dashboardData={dashboardData} loading={loading} selectedDate={selectedDate} /> */}
+        {/* Zone 2 - MỚI THÊM */}
+        <R003Zone2TrendAnalysis selectedDate={selectedDate} />
         {/*  ket thuc zone 2 */}
         {/* ===============================================================*/}
         {/*  bat dau zone 3 */}
         {/* ===============================================================*/}
-        <Zone3CellsProgressChart dashboardData={dashboardData} loading={loading} selectedDate={selectedDate} />
+        {/* <Zone3CellsProgressChart dashboardData={dashboardData} loading={loading} selectedDate={selectedDate} /> */}
         {/*  ket thuc  zone 3 */}
         {/* ===============================================================*/}
         {/*  bat dau zone 4 */}
         {/* ===============================================================*/}
-        <Zone4TableCells_DistributionChart dashboardData={dashboardData} loading={loading} selectedDate={selectedDate} />
+        {/* <Zone4TableCells_DistributionChart dashboardData={dashboardData} loading={loading} selectedDate={selectedDate} /> */}
         {/*  ket thuc  zone 4 */}
         {/* ===============================================================*/}
         {/* ZONE 5: Technical Summary */}

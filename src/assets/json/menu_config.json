@@ -115,10 +115,10 @@
           "icon": "bi bi-bar-chart"
         },
         {
-          "code": "CableManagement",
-          "name": "Tối ưu cell di động",
-          "url": "/cable-management",
-          "icon": "bi bi-grid"
+          "code": "R003PRBLoadBalancing",
+          "name": "R003-PRBs Load Balancing",
+          "url": "/R003-PRBLoad-Balancing",
+          "icon": "bi bi-cpu"
         },
         {
           "code": "R005SleepingCellManagement",

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 // import { Card, Table, Badge, Button } from "react-bootstrap";
 import { Card, Table, Badge, Button, Form } from "react-bootstrap";
 
-import API_CONFIG from "../Designer/ApiR005SleepingCellConfig";
+import API_CONFIG from "../Designer/ApiR003PRBLoadBalancingConfig";
 
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
