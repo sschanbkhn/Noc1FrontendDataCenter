@@ -31,6 +31,21 @@ const KPITrendModal: React.FC<KPITrendModalProps> = ({ show, onClose, cellData, 
     }
   }, [show, cellData]);
 
+  useEffect(() => {
+    if (trendData.length > 0) {
+      console.log("📊 TREND DATA TIME FORMAT:");
+      console.log(
+        "First 10 times:",
+        trendData.slice(0, 10).map((d) => d.time)
+      );
+      console.log("🔍 Looking for CR date:", crExecutionDates);
+
+      // Kiểm tra có match không
+      const hasMatch = trendData.some((d) => crExecutionDates.includes(d.time));
+      console.log("✅ Has matching time?", hasMatch);
+    }
+  }, [trendData, crExecutionDates]);
+
   const fetchTrendData = async () => {
     setLoading(true);
     setError(null);
@@ -38,7 +53,7 @@ const KPITrendModal: React.FC<KPITrendModalProps> = ({ show, onClose, cellData, 
     try {
       // Trừ 1 ngày trước khi gọi API
       const selectedDate = new Date(endDate);
-      selectedDate.setDate(selectedDate.getDate() - 1);
+      selectedDate.setDate(selectedDate.getDate() - 1 + 1);
       const apiDate = selectedDate.toISOString().split("T")[0];
       const response = await axios.get(`${API_CONFIG.BASE_URL}/dashboard/kpi-trend-prbs`, {
         params: {
@@ -59,11 +74,35 @@ const KPITrendModal: React.FC<KPITrendModalProps> = ({ show, onClose, cellData, 
   };
 
   const fetchCRExecutionDates = async () => {
+    console.log("🚀 fetchCRExecutionDates STARTED"); // ← THÊM
+    console.log("cellData:", cellData); // ← THÊM
+    console.log("endDate:", endDate); // ← THÊM
     try {
+      const cellId = cellData.dn_mrbts_site || cellData.lncel_name;
       // const response = await axios.get(`${API_CONFIG.BASE_URL}/cr-execution-dates?cellId=${cellId}`);
-      const response = await axios.get(`${API_CONFIG.BASE_URL}/cr-execution-dates?cellId=${cellData.cell_id || cellData.lncel_name}`);
+      // const response = await axios.get(`${API_CONFIG.BASE_URL}/cr-execution-dates?cellId=${cellData.cell_id || cellData.lncel_name}`);
+      // const response = await axios.get(`${API_CONFIG.BASE_URL}/dashboard/cr-execution-dates`, {
+      // params: { cellId },
+      // });
+      const selectedDate = new Date(endDate);
+      const apiDate = selectedDate.toISOString().split("T")[0];
+      console.error("apiDate:", apiDate);
+
+      // const cellId = cellData.dn_mrbts_site || cellData.lncel_name;
+      console.log("🔑 cellId being sent:", cellId);
+
+      const response = await axios.get(`${API_CONFIG.BASE_URL}/dashboard/cr-logs-dates`, {
+        params: {
+          cellId,
+          selectedDate: apiDate,
+        },
+      });
       // Response format: ["2024-11-01", "2024-11-05", "2024-11-07"]
+      console.error("apiDate:", `${API_CONFIG.BASE_URL}/dashboard/cr-logs-dates`);
       setCrExecutionDates(response.data.dates);
+
+      console.log("📊 CR Response:", response.data); // ← THÊM DÒNG NÀY
+      console.log("📊 CR Dates Array:", response.data.dates); // ← THÊM DÒNG NÀY
     } catch (error) {
       console.error("Error fetching CR execution dates:", error);
     }
@@ -146,7 +185,7 @@ const KPITrendModal: React.FC<KPITrendModalProps> = ({ show, onClose, cellData, 
                   <span className="text-primary">
                     {(() => {
                       const end = new Date(endDate);
-                      end.setDate(end.getDate() - 1); // 2025-10-07
+                      end.setDate(end.getDate() - 1 + 1); // 2025-10-07
 
                       const start = new Date(end);
                       start.setDate(start.getDate() - 20); // 2025-09-17
@@ -166,9 +205,16 @@ const KPITrendModal: React.FC<KPITrendModalProps> = ({ show, onClose, cellData, 
                 <ReferenceLine y={70} stroke="red" strokeWidth={2} strokeDasharray="5 5" label="Threshold 70%" />
 
                 {/* Các đường dọc màu vàng da cam - thời điểm chạy CR */}
+                {/*}
                 {crExecutionDates.map((date, index) => (
                   <ReferenceLine key={index} x={date} stroke="orange" strokeWidth={2} strokeDasharray="3 3" label={{ value: "CR", position: "top" }} />
                 ))}
+*/}
+
+                {(() => {
+                  console.log("🎨 crExecutionDates in render:", crExecutionDates);
+                  return crExecutionDates.map((date, index) => <ReferenceLine key={index} x={date} stroke="orange" strokeWidth={2} strokeDasharray="3 3" label={{ value: "CR", position: "top" }} />);
+                })()}
 
                 {/* <XAxis dataKey="time" label={{ value: "Thời gian", position: "insideBottom", offset: -5 }} angle={-45} textAnchor="end" height={80} /> */}
                 <XAxis dataKey="time" angle={-45} textAnchor="end" height={80} interval="preserveStartEnd" tick={{ fontSize: 11 }} />
