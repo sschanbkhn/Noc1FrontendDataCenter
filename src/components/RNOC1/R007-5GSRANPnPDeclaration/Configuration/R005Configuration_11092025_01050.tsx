@@ -7,7 +7,7 @@ import { faEnvelope, faFolderOpen, faNetworkWired, faShieldAlt, faClock, faDatab
 
 import * as ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
-import API_CONFIG from "../Designer/ApiR005SleepingCellConfig";
+import API_CONFIG from "../Designer/ApiR0075GSRANPnPDeclarationConfig";
 
 // Mapping card với table
 /*

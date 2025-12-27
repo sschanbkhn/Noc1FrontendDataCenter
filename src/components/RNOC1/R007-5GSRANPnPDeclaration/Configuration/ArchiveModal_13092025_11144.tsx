@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { ArchiveFilters, DropdownOptions } from "./ConfigTypes";
-import API_CONFIG from "../Designer/ApiR005SleepingCellConfig";
+import API_CONFIG from "../Designer/ApiR0075GSRANPnPDeclarationConfig";
 
 interface ArchiveModalProps {
   show: boolean;

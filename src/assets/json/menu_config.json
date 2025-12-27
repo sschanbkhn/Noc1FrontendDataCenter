@@ -133,9 +133,9 @@
           "icon": "bi bi-grid"
         },
         {
-          "code": "HistoryCurenAlarm",
-          "name": "Tự động khai báo trạm 5G",
-          "url": "/history-curen-alarm",
+          "code": "R0075GSRANPnPDeclaration",
+          "name": "R007-5GSRAN PnP Declaration",
+          "url": "/R007-5GSRAN-PnP-Declaration",
           "icon": "bi bi-grid"
         },
         {

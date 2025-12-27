@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faFolderOpen, faNetworkWired, faShieldAlt, faClock, faDatabase, faPlus, faTimes, faSearch, faServer, faChartLine, faEdit, faTrash, faDownload, faSpinner, faSortUp, faSortDown } from "@fortawesome/free-solid-svg-icons";
 import * as ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
-import API_CONFIG from "../Designer/ApiR005SleepingCellConfig";
+import API_CONFIG from "../Designer/ApiR0075GSRANPnPDeclarationConfig";
 
 // ===== TYPES =====
 type ModuleStatus = "active" | "maintenance";

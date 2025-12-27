@@ -1,7 +1,7 @@
 // useConfigData.ts - Improved Version
 import { useState } from "react";
 import { configTableMapping } from "./ConfigConstants";
-import API_CONFIG from "../Designer/ApiR005SleepingCellConfig";
+import API_CONFIG from "../Designer/ApiR0075GSRANPnPDeclarationConfig";
 
 export const useConfigData = () => {
   const [modalData, setModalData] = useState([]);

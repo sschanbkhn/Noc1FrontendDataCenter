@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faEdit, faTrash, faDownload, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { ArchiveFilters, DropdownOptions } from "./ConfigTypes";
-import API_CONFIG from "../Designer/ApiR005SleepingCellConfig";
+import API_CONFIG from "../Designer/ApiR0075GSRANPnPDeclarationConfig";
 import * as ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 

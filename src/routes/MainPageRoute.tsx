@@ -52,6 +52,8 @@ import HomeSleepingCell from "components/RNOC1/R005-SleepingCell/R005HomeSleepin
 
 import HomePRBLoadBalancing from "components/RNOC1/R003-PRBLoadBalancing/R003HomePRBLoadBalancing";
 
+import Home5GSRANPnPDeclaration from "components/RNOC1/R007-5GSRANPnPDeclaration/R007Home5GSRANPnPDeclaration";
+
 interface Props {
   Apps: any;
 }
@@ -154,6 +156,9 @@ const MainPageRoute = (props: Props) => {
       case "R003PRBLoadBalancing": // ← Match với code trong menu
         return <HomePRBLoadBalancing />;
 
+      case "R0075GSRANPnPDeclaration": // ← Match với code trong menu
+        return <Home5GSRANPnPDeclaration />;
+
       default:
         return <Page404 />;
     }
@@ -233,6 +238,8 @@ const MainPageRoute = (props: Props) => {
 */}
 
       <Route path="/prbload-balancing" element={<HomePRBLoadBalancing />} />
+
+      <Route path="/5GSRANPnP-Declaration" element={<Home5GSRANPnPDeclaration />} />
     </Routes>
   );
 };

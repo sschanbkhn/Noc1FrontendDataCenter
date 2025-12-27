@@ -1509,7 +1509,7 @@ const R003Zone1Summary: React.FC<R003Zone1SummaryProps> = ({ selectedDate }) => 
                         </div>
                         {/* ======================================================================== */}
 
-                        {/* Value - DƯỚI GIỮA */}
+                        {/* Value - DƯỚI GIỮA  chinh mau */}
                         <div
                           style={{
                             fontSize: "48px",

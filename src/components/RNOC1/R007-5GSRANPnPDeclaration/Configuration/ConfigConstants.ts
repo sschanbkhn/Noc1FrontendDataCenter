@@ -1,6 +1,6 @@
 import { faEnvelope, faFolderOpen, faNetworkWired, faShieldAlt, faClock, faDatabase, faServer, faChartLine } from "@fortawesome/free-solid-svg-icons";
 import { ConfigModule } from "./ConfigTypes";
-import API_CONFIG from "../Designer/ApiR005SleepingCellConfig";
+import API_CONFIG from "../Designer/ApiR0075GSRANPnPDeclarationConfig";
 
 export const configTableMapping: { [key: number]: { table: string; api: string; title: string } } = {
   1: {
