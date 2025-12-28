@@ -182,7 +182,7 @@ setState(prev => ({
     const uploadStartTime = new Date();
     console.log("📤 Step 2: Uploading to OSS Netact...");
 
-/*
+
     // Set start time vào state
 setState(prev => ({
   ...prev,
@@ -192,7 +192,7 @@ setState(prev => ({
   }
 }));
 //========================================================================
-*/
+
     const uploadResult = await R007GeneratorService.uploadToOSS(
       jobId, 
       state.commissionType!
@@ -215,7 +215,9 @@ setState(prev => ({
 }));
 
 console.log("✅ Uploaded to OSS, ossJobId:", uploadResult.ossJobId);
-        //========================================================================
+    //========================================================================
+
+
 
         // ====================================================================
 // STEP 3: EXECUTE COMMISSIONING - START
@@ -1618,6 +1620,18 @@ const formatDuration = (startTime: Date | null, endTime: Date | null): string =>
         overflowY: "auto", 
         maxHeight: "calc(80vh - 100px)" 
       }}>
+
+        {/* ✅ DEBUG */}
+        {/*}
+  <div style={{ padding: "10px", background: "yellow", marginBottom: "20px" }}>
+    <p>currentExecutionId (local): {currentExecutionId || 'NULL'}</p>
+    <p>state.currentExecutionId (global): {state.currentExecutionId || 'NULL'}</p>
+    <p>Upload startTime: {state.executionTimestamps.uploadOSS.startTime?.toString() || 'NULL'}</p>
+    <p>Upload endTime: {state.executionTimestamps.uploadOSS.endTime?.toString() || 'NULL'}</p>
+    <p>Execute startTime: {state.executionTimestamps.executeCommissioning.startTime?.toString() || 'NULL'}</p>
+  </div>
+
+  */}
         
         {/* Step 1: Generate XML Files */}
         <div style={{ 
@@ -1714,7 +1728,7 @@ const formatDuration = (startTime: Date | null, endTime: Date | null): string =>
               flexShrink: 0,
               boxShadow: "0 4px 12px rgba(245, 158, 11, 0.3)",
             }}>
-              {currentExecutionId ? "✅" : "🔄"}
+              {state.currentExecutionId ? "✅" : "🔄"}
             </div>
 
             <div style={{ flex: 1 }}>
@@ -1738,7 +1752,7 @@ const formatDuration = (startTime: Date | null, endTime: Date | null): string =>
                 📤 Files: {state.generationProgress.completedSites} uploaded
               </p>
               
-              {currentExecutionId && (
+              {state.currentExecutionId && (
                 <div style={{
                   marginTop: "8px",
                   padding: "8px 12px",
@@ -1753,7 +1767,7 @@ const formatDuration = (startTime: Date | null, endTime: Date | null): string =>
               )}
             </div>
 
-            {currentExecutionId && (
+            {state.currentExecutionId && (
               <div style={{
                 position: "absolute",
                 left: "23px",
@@ -1767,7 +1781,7 @@ const formatDuration = (startTime: Date | null, endTime: Date | null): string =>
         )}
 
         {/* Step 3: Execute Commissioning (if started) */}
-        {currentExecutionId && (
+        {state.currentExecutionId && (
           <div style={{ 
             display: "flex", 
             gap: "20px", 
@@ -1848,8 +1862,12 @@ const formatDuration = (startTime: Date | null, endTime: Date | null): string =>
           </div>
         )}
 
+
         {/* Step 4: Waiting (if not started yet) */}
-        {!currentExecutionId && state.generationProgress && (
+        {/*!currentExecutionId && state.generationProgress && ( */}
+          {/* Step 4: Waiting - CHỈ hiện khi đã gen NHƯNG chưa upload */}
+{!currentExecutionId && state.generationProgress && 
+ !state.executionTimestamps.uploadOSS.startTime && (
           <div style={{ 
             display: "flex", 
             gap: "20px", 

@@ -737,8 +737,8 @@ error: null,                   // ← Reset
                 .filter(s => s.selected && s.templateMatched)
                 .map((site, index) => {
                   // Check if site in results (success or failed)
-                  const isSuccess = results?.results?.some((r: any) => r.SiteId === site.id && r.Status === "success");
-                  const isFailed = results?.results?.some((r: any) => r.SiteId === site.id && r.Status === "failed");
+                  const isSuccess = results?.results?.some((r: any) => r.siteId === site.id && r.status === "success");
+                  const isFailed = results?.results?.some((r: any) => r.siteId === site.id && r.status === "failed");
                   
                   return (
                     <tr key={site.id} style={{ borderBottom: "1px solid #e0e0e0" }}>
@@ -761,6 +761,17 @@ error: null,                   // ← Reset
 
         {/* BẢNG 2: SUCCESSFUL SITES */}
         {activeCard === "successful" && results?.results && (
+<>
+{/* ✅ THÊM DEBUG NÀY */}
+{/*}
+    <div style={{ padding: "10px", background: "yellow", marginBottom: "10px" }}>
+      <p>Total: {results.results.length}</p>
+      <p>Full object: {JSON.stringify(results.results[0])}</p>
+      <p>Statuses: {results.results.map((r: any) => r.Status).join(', ')}</p>
+    </div>
+
+*/}
+
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
             <thead>
               <tr style={{ background: "#f5f5f5" }}>
@@ -773,17 +784,17 @@ error: null,                   // ← Reset
             </thead>
             <tbody>
               {results.results
-                .filter((r: any) => r.Status === "success")
+                .filter((r: any) => r.status === "success")
                 .map((result: any, index: number) => {
-                  const site = state.sites.find(s => s.id === result.SiteId);
+                  const site = state.sites.find(s => s.id === result.siteId);
                   return (
-                    <tr key={result.SiteId} style={{ borderBottom: "1px solid #e0e0e0" }}>
+                    <tr key={result.siteId} style={{ borderBottom: "1px solid #e0e0e0" }}>
                       <td style={{ padding: "12px" }}>{index + 1}</td>
-                      <td style={{ padding: "12px", fontWeight: "600" }}>{site?.siteName || result.SiteId}</td>
+                      <td style={{ padding: "12px", fontWeight: "600" }}>{site?.siteName || result.siteId}</td>
                       <td style={{ padding: "12px" }}>{site?.ipOam}</td>
                       <td style={{ padding: "12px", fontSize: "12px", color: "#666" }}>
                         {/* {result.Message || "Commissioned successfully"} */}
-                        {result.Error || "Commissioned successfully"}
+                        {result.error || "Commissioned successfully"}
                       </td>
                       <td style={{ padding: "12px", textAlign: "center" }}>
                         <span style={{ color: "#059669", fontWeight: "600" }}>✅ Success</span>
@@ -793,6 +804,8 @@ error: null,                   // ← Reset
                 })}
             </tbody>
           </table>
+
+          </>
         )}
 {/* // ==================================================================== */}
 
@@ -809,17 +822,17 @@ error: null,                   // ← Reset
             </thead>
             <tbody>
               {results.results
-                .filter((r: any) => r.Status === "failed")
+                .filter((r: any) => r.status === "failed")
                 .map((result: any, index: number) => {
-                  const site = state.sites.find(s => s.id === result.SiteId);
+                  const site = state.sites.find(s => s.id === result.siteId);
                   return (
-                    <tr key={result.SiteId} style={{ borderBottom: "1px solid #e0e0e0" }}>
+                    <tr key={result.siteId} style={{ borderBottom: "1px solid #e0e0e0" }}>
                       <td style={{ padding: "12px" }}>{index + 1}</td>
-                      <td style={{ padding: "12px", fontWeight: "600" }}>{site?.siteName || result.SiteId}</td>
+                      <td style={{ padding: "12px", fontWeight: "600" }}>{site?.siteName ||   result.siteId}</td>
                       <td style={{ padding: "12px" }}>{site?.ipOam}</td>
                       <td style={{ padding: "12px", color: "#dc2626", fontSize: "13px" }}>
                         {/* {result.ErrorMessage || "Unknown error"} */}
-                        {result.Error || "Unknown error"}
+                        {result.error || "Unknown error"}
                       </td>
                     </tr>
                   );
@@ -831,6 +844,9 @@ error: null,                   // ← Reset
     </div>
   </div>
   // ====================================================================
+
+
+
 
 )}
 
